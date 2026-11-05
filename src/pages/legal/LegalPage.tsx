@@ -40,7 +40,7 @@ export default function LegalPage() {
       <div className="box">
         <p>
           <b>In short:</b>
-          {' '}no advertising, no tracking pixels and no third-party embeds. Visits are counted with Google Analytics only if you choose “Allow” on the banner; until then nothing is sent to Google and no cookies are set.
+          {' '}no advertising, no tracking pixels and no third-party embeds. Page-load speed is measured anonymously, without cookies. Visits are counted with Google Analytics only if you choose “Allow” on the banner; until then nothing is sent to Google and no cookies are set.
         </p>
       </div>
       <h3>Who is responsible</h3>
@@ -62,6 +62,10 @@ export default function LegalPage() {
         If you choose “Allow”, this site loads Google Analytics 4 (Google LLC / Google Ireland Ltd.), which sets cookies (names starting{' '}
         <code>_ga</code>
         , kept for up to 2 years) and receives your approximate location, device and browser type, the pages you view and how you arrived. I use it only to see which work people look at; it is not used for advertising, and Google Analytics does not store full IP addresses. If you choose “No thanks”, Google Analytics is never loaded. Your consent is the legal basis for this, and you can withdraw it at any time by clearing this site's data in your browser.
+      </p>
+      <h3>Performance measurement</h3>
+      <p>
+        This site is hosted on Vercel (Vercel Inc., USA) and uses Vercel Speed Insights to measure how fast pages load. On each visit your browser reports loading-time metrics together with the page address, your device type, browser and approximate country. No cookies are set, and the data is anonymous and cannot identify you. I use it only to keep the site fast.
       </p>
       <h3>When you contact me</h3>
       <p>
