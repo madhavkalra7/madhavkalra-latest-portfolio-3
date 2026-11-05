@@ -1,0 +1,41 @@
+/* Stylesheet of the /ability-card/ page, extracted verbatim from the original site (URLs made root-absolute). */
+
+
+@font-face{font-family:"EB Garamond";src:url(/fonts/eb-garamond-latin.woff2) format("woff2");font-weight:400 800;font-display:swap}
+:root{color-scheme:dark;--ink:#c8b48f;--dim:#8a7c68;--hint:#bdaa89}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#050404;overscroll-behavior:none}
+body{font-family:"Gill Sans","Gill Sans MT","Avenir Next",Futura,system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
+#scene{position:fixed;inset:0;cursor:grab;touch-action:none}
+#scene canvas{display:block;width:100%;height:100%;outline:none}
+body.dragging #scene{cursor:grabbing}
+.mark,.hint{position:fixed;margin:0;pointer-events:none;z-index:1}
+.mark{top:max(26px,env(safe-area-inset-top));left:max(30px,env(safe-area-inset-left));font:500 12px/1 "Gill Sans","Gill Sans MT","Avenir Next",Futura,system-ui,sans-serif;letter-spacing:.34em;text-transform:uppercase;opacity:0;transform:translateY(-6px);transition:opacity 1.4s .9s ease,transform 1.4s .9s ease}
+.mark small{display:block;margin-top:9px;font:italic 400 13px/1 "Gill Sans","Gill Sans MT","Avenir Next",Futura,system-ui,sans-serif;letter-spacing:.04em;text-transform:none;color:var(--dim)}
+.hint{left:50%;bottom:max(28px,env(safe-area-inset-bottom));transform:translate(-50%,6px);font:400 12px/1 "Gill Sans","Gill Sans MT","Avenir Next",Futura,system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--hint);text-shadow:0 1px 8px rgba(0,0,0,.7);white-space:nowrap;opacity:0;transition:opacity 1.2s 1.8s ease,transform 1.2s 1.8s ease}
+/* the loading screen: opaque, so nothing of the card or the shrine shows before the scan */
+#loading{position:fixed;inset:0;z-index:5;pointer-events:none;transition:opacity .9s ease,visibility 0s .9s}.cl{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:18px;background:radial-gradient(60% 48% at 50% 46%,#2a2220 0%,#120f0f 58%,#050404 100%);  font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#E8E4E0;-webkit-font-smoothing:antialiased}.cl__name{margin:0;font-size:13px;font-weight:600;line-height:1;letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;color:#E8E4E0}.cl__line{position:relative;width:clamp(180px,42vw,260px);height:2px;border-radius:2px;background:rgba(232,228,224,.14);overflow:hidden}.cl__line i{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,#a98747,#D6B26E 60%,#efdfb2);transform-origin:0 50%;  transform:scaleX(var(--p,0));transition:transform .45s ease}.cl__row{display:flex;justify-content:space-between;width:clamp(180px,42vw,260px);margin:0;font:500 10.5px/1 ui-monospace,'SF Mono',Menlo,Consolas,monospace;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,228,224,.6)}.cl__row b,.cl__row #ld-pct{font-weight:600;letter-spacing:.16em;color:#D6B26E}@media (prefers-reduced-motion:reduce){.cl__line i{transition:none}}
+#loading.gone{opacity:0;visibility:hidden}
+.ld{display:grid;justify-items:center;width:min(240px,70vw)}
+.ld-ember{position:relative;width:64px;height:78px;margin-bottom:26px}
+.ld-ember b{position:absolute;left:50%;bottom:6px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:#ffd8a0;
+  box-shadow:0 0 6px 2px rgba(255,150,60,.9),0 0 22px 8px rgba(255,90,20,.35),0 0 60px 22px rgba(255,70,10,.12);animation:ld-breathe 2.4s ease-in-out infinite}
+.ld-ember i{position:absolute;left:50%;bottom:10px;width:2px;height:2px;margin-left:-1px;border-radius:50%;background:#ffc27a;
+  box-shadow:0 0 4px 1px rgba(255,120,40,.8);opacity:0;animation:ld-spark 2.6s linear infinite}
+.ld-ember i:nth-child(3){animation-delay:.65s;animation-duration:2.9s;--dx:-9px}
+.ld-ember i:nth-child(4){animation-delay:1.3s;animation-duration:2.3s;--dx:7px}
+.ld-ember i:nth-child(5){animation-delay:1.9s;animation-duration:3.1s;--dx:-4px}
+@keyframes ld-breathe{0%,100%{transform:scale(.86);opacity:.8}50%{transform:scale(1.08);opacity:1}}
+@keyframes ld-spark{0%{transform:translate(0,0);opacity:0}12%{opacity:1}100%{transform:translate(var(--dx,5px),-66px);opacity:0}}
+.ld-title{margin:0 0 22px;font:500 12px/1 "Gill Sans","Gill Sans MT","Avenir Next",Futura,system-ui,sans-serif;letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--ink);opacity:.9}
+.ld-bar{position:relative;width:100%;height:1px;background:rgba(200,180,143,.16);overflow:hidden}
+.ld-bar span{position:absolute;inset:0;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,#8a3a12,#ff8a3a 70%,#ffd6a0);transition:transform .45s ease}
+.ld-row{display:flex;justify-content:space-between;width:100%;margin:14px 0 0;font:400 11px/1 "Gill Sans","Gill Sans MT","Avenir Next",Futura,system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+#ld-pct{letter-spacing:.12em;font-variant-numeric:tabular-nums;color:var(--hint)}
+body.ready .mark{opacity:.9;transform:none}
+body.ready .hint{opacity:.85;transform:translate(-50%,0)}
+body.ready .hint.gone{opacity:0;transition-delay:0s;transition-duration:.9s}
+@media (hover:none){.hint{font-size:11px;letter-spacing:.18em}}
+@media (max-width:520px){.hint{white-space:normal;text-align:center;width:86vw;line-height:1.7}}
+@media (prefers-reduced-motion:reduce){.mark,.hint,#loading,.ld-bar span{transition:none}.ld-ember b,.ld-ember i{animation:none}.ld-ember i{display:none}}
+
