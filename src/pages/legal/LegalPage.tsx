@@ -52,9 +52,9 @@ export default function LegalPage() {
       <h3>What this site stores on your device</h3>
       <p>
         Two things, both in your browser's local storage: your light or dark mode choice (key{' '}
-        <code>rishi-mode</code>
+        <code>madhav-mode</code>
         ) and your answer to the analytics question (key{' '}
-        <code>rishi-analytics</code>
+        <code>madhav-analytics</code>
         ). Neither is a cookie and neither leaves your device. You can clear them any time from your browser settings, which also brings the analytics question back.
       </p>
       <h3>Analytics</h3>

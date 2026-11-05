@@ -1,6 +1,6 @@
-# therishithakor.com: React + TypeScript
+# Madhav Kalra: portfolio
 
-A local, editable React 19 + TypeScript (Vite) rebuild of https://therishithakor.com. It keeps the same pages, styles, assets and interactions as the live site.
+Madhav Kalra's portfolio site (https://www.madhavkalra.dev), built with React 19 and TypeScript on Vite.
 
 ## Run
 
@@ -40,26 +40,26 @@ src/
     <page>.css              the page's stylesheet
     behaviors.ts            the page's interactions, in order (and any extra modules they import)
     data.ts                 content arrays rendered with .map() (projects, photos…), where the page has them
-public/                     images, videos, fonts and icons at the same paths as the live site
+public/                     images, videos, fonts, icons and the CV (public/cv/)
 ```
 
 ### How a page works
 
 1. The `<Page>.tsx` component renders the markup.
-2. `usePageStyles(css)` injects that page's stylesheet while the page is mounted. Each original page has its own complete stylesheet, including `:root` and `body` rules, so the stylesheets are not global.
+2. `usePageStyles(css)` injects that page's stylesheet while the page is mounted. Each page has its own complete stylesheet, including `:root` and `body` rules, so the stylesheets are not global.
 3. `useBehaviors(...)` runs the page's interactions after mount: animations, scroll effects, the pull cord, doors, lightboxes and so on. Each behaviour registers its listeners, timers, animation frames and observers through a `Scope`, and all of them are removed on unmount.
 
 ### Editing
 
 - **Text, images, links:** edit the JSX in `<Page>.tsx`, or the page's `data.ts` for project and photo lists.
-- **Styles:** edit `<page>.css`. The class names match the original site.
+- **Styles:** edit `<page>.css`.
 - **Interactions:** edit the page's behaviour modules. They find elements by class or id, so keep those in sync when you rename things in the JSX.
 
 ### Notes
 
-- **Links between pages** are normal full-page navigations, as on the live site. The home page writes to the address bar itself: it shows `/home`, `/work` or `/my-story` while you scroll, and a room's URL while you stand inside one of its doors. The router therefore picks the page once, from the URL the document was loaded at.
+- **Links between pages** are normal full-page navigations. The home page writes to the address bar itself: it shows `/home`, `/work` or `/my-story` while you scroll, and a room's URL while you stand inside one of its doors. The router therefore picks the page once, from the URL the document was loaded at.
 - **Rooms inside the home page:** the home page loads each room page in an iframe with `?embed`. It also loads the ability card in an iframe. The frames and the home page talk over `postMessage`.
-- **Ability card engine:** `src/pages/ability-card/engine/holoCard.js` is the site's original compiled three.js scene module (about 7,700 lines), kept as-is. `three` comes from npm at r180, the same version as the live site. The TypeScript page around it prepares what the engine expects and relays its progress to the home page.
-- **Ability card frame and CORS:** the card's iframe is sandboxed, so its requests come from origin `null`. `vite.config.ts` allows that origin for dev and preview. When you deploy, the host must send `Access-Control-Allow-Origin` for scripts and fonts, as the live Netlify site does (`*`).
-- **Contact form:** the form posts to Netlify Forms only on the live domain. Anywhere else, including localhost, it opens an email draft, as the original does.
-- **Analytics:** Google Analytics loads only after a visitor clicks "Allow" in the cookie banner.
+- **Ability card engine:** `src/pages/ability-card/engine/holoCard.js` is a compiled three.js scene module (about 7,700 lines), kept as-is. `three` comes from npm at r180. The card's artwork is in `public/ability-card/assets/` (photo: `subject.webp`; name and stats: `type.webp`) and, for the flat fallback card, `public/card/` (`win_sub.webp`, `plate.webp`). The TypeScript page around it prepares what the engine expects and relays its progress to the home page.
+- **Ability card frame and CORS:** the card's iframe is sandboxed, so its requests come from origin `null`. `vite.config.ts` allows that origin for dev and preview. When you deploy, the host must send `Access-Control-Allow-Origin` for scripts and fonts (e.g. `*`).
+- **Contact form:** the form posts to Netlify Forms only on `madhavkalra.dev` or a `*.netlify.app` address (`FORM_LIVE` in `src/pages/home/behaviors/overlays.ts`). Anywhere else, including localhost or a non-Netlify host, it opens an email draft to madhavkalra2005@gmail.com.
+- **Analytics:** off. To turn it on, put your Google Analytics 4 measurement ID in `ID` in `src/behaviors/analytics.ts`. The cookie banner then appears, and GA loads only after a visitor clicks "Allow".

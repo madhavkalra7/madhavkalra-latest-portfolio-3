@@ -14,7 +14,7 @@
    the "lite" flag for modest devices (home), and the photographer page's "pre" state. */
 (function () {
   var d = document.documentElement, p = location.pathname;
-  try { if (localStorage.getItem('rishi-mode') === 'dark') d.dataset.mode = 'dark'; } catch (e) {}
+  try { if (localStorage.getItem('madhav-mode') === 'dark') d.dataset.mode = 'dark'; } catch (e) {}
   if (/[?&]embed\b/.test(location.search)) d.classList.add('embed');
   if (/^\/photographer(\/|$)/.test(p)) d.classList.add('pre');
   if (/^\/(home|work|my-story)?\/?$/.test(p)) {

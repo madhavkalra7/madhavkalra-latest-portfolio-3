@@ -3,7 +3,7 @@ import { $ } from '../../../lib/dom';
 import { hooks, reduced, root } from './state';
 
 /* ---------- Mode (light / dark) ---------- */
-const MODE_KEY = 'rishi-mode';
+const MODE_KEY = 'madhav-mode';
 type Mode = 'light' | 'dark';
 
 export function mode(_S: Scope): void {

@@ -5,11 +5,13 @@ declare global {
   interface Window { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void }
 }
 
-const ID = 'G-12PNLHKGHK', K = 'rishi-analytics';
+// Your Google Analytics 4 measurement ID (e.g. 'G-XXXXXXXXXX'). Empty: analytics is off and the cookie banner never shows.
+const ID = '', K = 'madhav-analytics';
 let loaded = false;
 
 /** Google Analytics, only after the visitor allows it in the cookie banner (#ck). */
 export function analytics(S: Scope): void {
+  if (!ID) return;
   let v: string | null = null;
   try { v = localStorage.getItem(K); } catch { /* storage blocked */ }
   const load = () => {

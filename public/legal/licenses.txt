@@ -1,5 +1,5 @@
 Third-party software and fonts used on this website, with their licences.
-Everything else on the site (text, photographs, designs) is (c) Rishi Thakor, all rights reserved.
+Everything else on the site (text, photographs, designs) is (c) Madhav Kalra, all rights reserved.
 
 ==============================================================================
 three.js r180 (https://threejs.org)
