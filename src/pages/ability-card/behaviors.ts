@@ -1,5 +1,6 @@
 import type { Behavior, Scope } from '../../lib/scope';
 import { $$ } from '../../lib/dom';
+import { readTilt, requestTiltPermission } from '../../lib/tilt';
 
 /* The ability card runs as its own document: the home page opens it in an iframe (/ability-card/) and the
    two talk over postMessage ({ holo: 'up' | 'progress' | 'ready' | 'fail' | 'close' }). */
@@ -87,4 +88,37 @@ function bridge(S: Scope): void {
   }, 120);
 }
 
-export const behaviors: Behavior[] = [renderBudget, storageImage, cardAssets, engine, bridge];
+/** Phone tilt leans the card, exactly like hovering a mouse over it: the tilt becomes a pointer position the engine
+    follows. Inside the home page the tilt arrives from the parent (sandboxed frames don't get the sensor); opened on
+    its own, the page reads the sensor itself. A finger on the card always wins, and when the phone is held still
+    nothing is sent, so the card's own idle sway and flip carry on. */
+function tiltInput(S: Scope): void {
+  let down = 0, lx = 9, ly = 9;
+  S.on(window, 'pointerdown', (e) => { if (e.isTrusted) down++; });
+  const up = (e: PointerEvent) => { if (e.isTrusted) down = Math.max(0, down - 1); };
+  S.on(window, 'pointerup', up); S.on(window, 'pointercancel', up);
+  const lean = (x: number, y: number) => {
+    if (down || (Math.abs(x - lx) < 0.015 && Math.abs(y - ly) < 0.015)) return;
+    lx = x; ly = y;
+    // the engine reads a pointer at (cardCentre + x·0.45, cardCentre − y·0.5) of the viewport as a full lean
+    window.dispatchEvent(new PointerEvent('pointermove', {
+      clientX: (0.5 + x * 0.45) * innerWidth, clientY: (0.5 + y * 0.5) * innerHeight, pointerType: 'touch', bubbles: true,
+    }));
+  };
+  if (window.parent !== window) {
+    S.on(window, 'message', (e) => {
+      const m = e.data as { holo?: string; x?: number; y?: number } | null;
+      if (e.source !== window.parent || m?.holo !== 'tilt' || typeof m.x !== 'number' || typeof m.y !== 'number') return;
+      lean(m.x, m.y);
+    });
+    return;
+  }
+  let gx = 0, gy = 0, asked = false;
+  S.on(window, 'pointerdown', () => { if (!asked) { asked = true; requestTiltPermission(); } });
+  S.on(window, 'deviceorientation', (e) => {
+    const t = readTilt(e); if (!t) return;
+    gx += (t.x - gx) * 0.25; gy += (t.y - gy) * 0.25; lean(gx, gy);
+  });
+}
+
+export const behaviors: Behavior[] = [renderBudget, storageImage, cardAssets, engine, bridge, tiltInput];

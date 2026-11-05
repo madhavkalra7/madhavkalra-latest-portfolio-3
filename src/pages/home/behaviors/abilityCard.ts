@@ -1,6 +1,7 @@
 import type { Scope } from '../../../lib/scope';
 import { $, $$, must } from '../../../lib/dom';
 import { FOCUSABLE, startScroll, stopScroll } from './state';
+import { readTilt, requestTiltPermission } from '../../../lib/tilt';
 
 type HoloMsg = { holo?: string; p?: number };
 
@@ -40,7 +41,9 @@ export function abilityCard(S: Scope): void {
     });
   }
   function show() {
-    if (isOpen) return; isOpen = true; openT = performance.now(); handing = false;
+    if (isOpen) return;
+    requestTiltPermission();   // iPhone: the gyroscope is only available after asking, from this tap
+    isOpen = true; openT = performance.now(); handing = false; gx = gy = 0;
     back = document.activeElement as HTMLElement | null;
     layer!.hidden = false; stopScroll();
     ld.classList.remove('out', 'gone'); progress(0); lite.hidden = true; lite.classList.remove('in');
@@ -119,10 +122,15 @@ export function abilityCard(S: Scope): void {
     from = null;
   });
   hc.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hc.classList.toggle('flip'); } });
-  // phones that report their own tilt move the card without a finger on it
+  // phones that report their own tilt move the card without a finger on it. The 3D card runs in a sandboxed frame,
+  // where browsers don't deliver the sensor, so this page reads it and hands the (smoothed) tilt to the frame.
+  let gx = 0, gy = 0;
   S.on(window, 'deviceorientation', (e) => {
-    if (held || e.gamma == null || !isOpen) return;
-    tx = clamp(e.gamma / 28); ty = clamp(((e.beta == null ? 45 : e.beta) - 45) / 30);
+    if (!isOpen) return;
+    const t = readTilt(e); if (!t) return;
+    if (useLite) { if (!held) { tx = t.x; ty = t.y; } return; }
+    gx += (t.x - gx) * 0.25; gy += (t.y - gy) * 0.25;
+    frame?.contentWindow?.postMessage({ holo: 'tilt', x: gx, y: gy }, '*');
   });
   S.on(document, 'visibilitychange', () => { if (document.hidden) spin(false); else if (isOpen && useLite) spin(true); });
   S.on(open, 'click', (e) => { e.stopPropagation(); show(); });
