@@ -65,8 +65,9 @@ export function overlays(S: Scope): void {
   S.on(must('#mPanel'), 'click', (e) => e.stopPropagation());
   S.on(must('#mClose'), 'click', closeModal);
   S.on(must('#mDone'), 'click', closeModal);
-  // the form sends for real only on the live website (Netlify receives it); anywhere else it opens an email
-  const FORM_LIVE = /(^|\.)madhavkalra\.dev$|\.netlify\.app$/.test(location.hostname);
+  // the form posts through Netlify Forms only when the site is hosted on Netlify; everywhere else (the live site is on
+  // Vercel, which has no form service) it opens the visitor's email app with the message filled in
+  const FORM_LIVE = /\.netlify\.app$/.test(location.hostname);
   const SEND_LABEL = FORM_LIVE ? 'Send message' : 'Write the email';
   must('#mSendLbl').textContent = SEND_LABEL;
   S.on(form, 'submit', (e) => {

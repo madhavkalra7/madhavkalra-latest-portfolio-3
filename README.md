@@ -11,6 +11,13 @@ npm run build      # type-check + production build into dist/
 npm run preview    # serve the production build at http://localhost:4173
 ```
 
+## Deploy (Vercel)
+
+Vercel's Vite preset works as is: build command `npm run build`, output directory `dist`. [vercel.json](vercel.json) does two jobs:
+
+- **Fallback to the app:** any URL without a file behind it (`/home`, `/work`, `/my-story`, `/web-developer/`, …) is served `index.html`, and the app picks the page from the URL. Without this, Vercel answers 404 for every page except `/`. The page URLs also share names with asset folders in `public/` (`/home/`, `/web-developer/`, …), but those folders have no `index.html`, so the fallback still applies.
+- **CORS header:** `Access-Control-Allow-Origin: *`, which the ability card's sandboxed frame needs to load its scripts and fonts.
+
 ## Pages
 
 | URL | Component |
@@ -60,6 +67,6 @@ public/                     images, videos, fonts, icons and the CV (public/cv/)
 - **Links between pages** are normal full-page navigations. The home page writes to the address bar itself: it shows `/home`, `/work` or `/my-story` while you scroll, and a room's URL while you stand inside one of its doors. The router therefore picks the page once, from the URL the document was loaded at.
 - **Rooms inside the home page:** the home page loads each room page in an iframe with `?embed`. It also loads the ability card in an iframe. The frames and the home page talk over `postMessage`.
 - **Ability card engine:** `src/pages/ability-card/engine/holoCard.js` is a compiled three.js scene module (about 7,700 lines), kept as-is. `three` comes from npm at r180. The card's artwork is in `public/ability-card/assets/` (photo: `subject.webp`; name and stats: `type.webp`) and, for the flat fallback card, `public/card/` (`win_sub.webp`, `plate.webp`). The TypeScript page around it prepares what the engine expects and relays its progress to the home page.
-- **Ability card frame and CORS:** the card's iframe is sandboxed, so its requests come from origin `null`. `vite.config.ts` allows that origin for dev and preview. When you deploy, the host must send `Access-Control-Allow-Origin` for scripts and fonts (e.g. `*`).
-- **Contact form:** the form posts to Netlify Forms only on `madhavkalra.dev` or a `*.netlify.app` address (`FORM_LIVE` in `src/pages/home/behaviors/overlays.ts`). Anywhere else, including localhost or a non-Netlify host, it opens an email draft to madhavkalra2005@gmail.com.
+- **Ability card frame and CORS:** the card's iframe is sandboxed, so its requests come from origin `null`. `vite.config.ts` allows that origin for dev and preview. On Vercel, `vercel.json` sends that header.
+- **Contact form:** opens the visitor's email app with the message filled in, addressed to madhavkalra2005@gmail.com. Vercel has no form service. Only on a `*.netlify.app` address does it post through Netlify Forms instead (`FORM_LIVE` in `src/pages/home/behaviors/overlays.ts`).
 - **Analytics:** off. To turn it on, put your Google Analytics 4 measurement ID in `ID` in `src/behaviors/analytics.ts`. The cookie banner then appears, and GA loads only after a visitor clicks "Allow".

@@ -65,10 +65,10 @@ export default function LegalPage() {
       </p>
       <h3>When you contact me</h3>
       <p>
-        On madhavkalra.dev, the "Hire me" form sends your name, email address, phone number and message to me through Netlify Forms, the form service of this site's host (Netlify, Inc., USA). Netlify stores the message in my account and forwards it to my inbox (Gmail, run by Google). If the form can't send, or you are viewing a copy of this site somewhere else, it opens your own email app with the message filled in instead, and nothing is sent until you press send there.
+        The "Hire me" form doesn't send anything itself: it opens your own email app with your name, email address, phone number and message filled in, addressed to me. Nothing is sent until you press send there, and the email then goes to my inbox (Gmail, run by Google).
       </p>
       <p>
-        I collect your phone number so I can reach you quickly about your project. I will only call or message you in relation to the enquiry you submit, never for marketing. I use what you send only to reply to you and to discuss your project. I keep it only as long as it is useful for our work together, and I'll delete it, including the copy held by Netlify, if you ask.
+        I collect your phone number so I can reach you quickly about your project. I will only call or message you in relation to the enquiry you submit, never for marketing. I use what you send only to reply to you and to discuss your project. I keep it only as long as it is useful for our work together, and I'll delete it, if you ask.
       </p>
       <h3>The hosting provider</h3>
       <p>
